@@ -1,0 +1,42 @@
+version: "3.7"
+
+#############################
+#         Dev Notes         #
+#############################
+#     mongoDB image is      #
+#   needed (or              #
+#      installed version)   #
+#     ----------------      #
+#     If you've got no      #
+#   docker-compose, for     #
+#   example in Windows,     #
+#   execute the command:    #
+#  docker build -t be_api . #
+#                           #
+#     ----------------      #
+#    Use 56747 as node      #
+#    debug port             #
+#############################
+
+services: 
+    coati_calendar:
+        container_name: coati_calendar.dev
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        environment: 
+            NODE_ENV: development
+            NODE_PORT: 3000
+        volumes:
+            - ./:/opt/coati_calendar
+            - /opt/coati_calendar/node_modules
+        ports:
+            - "3000:3000"
+        networks:
+            - mongodb_network
+        entrypoint: ["npm", "start"]
+
+networks:
+    mongodb_network:
+        name: "mongodb_network"
+        driver: bridge
