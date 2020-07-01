@@ -24,7 +24,7 @@ backend for calendar project API
 
 *   for running with docker (if you don't have docker-compose):
     ```
-    $ docker run -it --publish 4077:4077 <Container_Name>
+    $ docker run -it --publish 3000:3000 <Container_Name>
     ```
 
 *   press `ctrl` and `c` keys at the same time to exit docker process.
