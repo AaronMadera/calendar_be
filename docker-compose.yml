@@ -32,9 +32,10 @@ services:
             - /opt/coati_calendar/node_modules
         ports:
             - "3000:3000"
+            - "56747:56747"
         networks:
             - mongodb_network
-        entrypoint: ["npm", "start"]
+        entrypoint: ["npm", "run", "debug"]
 
 networks:
     mongodb_network:
