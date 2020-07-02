@@ -10,6 +10,14 @@ backend for calendar project API
     https://github.com/Yelp/docker-compose/blob/master/docs/install.md
 
 *   **Note**: docker compose is not supported in Windows yet.
+
+*   extract file `mongodb-docker-image.zip` in your home directory (or other desired directory),
+    open terminal in container folder of the extracted `docker-compose.yml`, and run:
+    ```
+    $ docker-compose up
+    ```
+    And now you already have mongodb docker image running in your computer.
+    With the network `mongodb_network`.
 ------------------------------------------------------------------------------
 ## Useful Commands
 *   for building (if you don't have docker-compose):
@@ -28,3 +36,14 @@ backend for calendar project API
     ```
 
 *   press `ctrl` and `c` keys at the same time to exit docker process.
+
+## Instructions
+*   build this docker image with (inside this main folder)
+    ```
+    $ docker-compose build
+    ```
+
+*   up this docker image with (inside this main folder)
+    ```
+    $ docker-compose up
+    ```
