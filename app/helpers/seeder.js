@@ -9,7 +9,8 @@ DB.Initialize()
         const user = {
             name: 'Admin',
             email: 'super@user.com',
-            password: bcrypt.hashSync('admin123', bcrypt.genSaltSync(8))
+            password: bcrypt.hashSync('admin123', bcrypt.genSaltSync(8)),
+            isAdmin: true
         };
         const seederUser = await model.findOne({ email: user.email });
         if (!seederUser) {
