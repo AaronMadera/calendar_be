@@ -1,4 +1,5 @@
 {
+    "sessionSecret": "ss$hh.thhhh1s.1s.my.$essssssssss$$$ion.s3cr3t",
     "mongo": {
         "retries": 3,
         "url": "mongodb://mongodb:27017/coati_calendar"

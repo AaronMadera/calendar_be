@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "nodemon --legacy-watch --inspect=0.0.0.0:56747 ./bin/www"
+    "debug": "nodemon --legacy-watch --inspect=0.0.0.0:56747 ./bin/www",
+    "seeder": "node ./app/helpers/seeder.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,6 +15,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11"
