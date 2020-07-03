@@ -1,0 +1,6 @@
+{
+    "mongo": {
+        "retries": 3,
+        "url": "mongodb://mongodb:27017/coati_calendar"
+    }
+}
