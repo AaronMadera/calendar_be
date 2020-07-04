@@ -13,6 +13,11 @@ class BaseRepository {
 
         return query.exec();
     }
+
+    async Create(record) {
+        return new this.model(record).save();
+    }
+
 }
 
 module.exports = BaseRepository;
