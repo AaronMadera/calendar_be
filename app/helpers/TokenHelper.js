@@ -15,6 +15,12 @@ class TokenHelper {
             })
         });
     }
+
+    static async DecodeToken(token) {
+        return new Promise((res, rej) =>
+            jwt.verify(token, global.config.sessionSecret, (e, decoded) => e ? rej(e) : res(decoded))
+        );
+    }
 }
 
 module.exports = TokenHelper;
