@@ -1,4 +1,4 @@
-FROM node:8.11.4
+FROM node:12.18.2
 
 RUN mkdir -p /opt/coati_calendar
 WORKDIR /opt/coati_calendar
