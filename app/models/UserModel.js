@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 class UserModel {
     constructor (mongoose, name) {
@@ -25,6 +25,21 @@ class UserModel {
                 bcrypt.compare(pass, pass2Compare, (e, valid) => e ? rej(e) : res(valid))
             );
         }
+
+        this.Schema.pre('save', function (next) {
+            const user = this;
+            return new Promise((res, rej) => {
+                bcrypt.genSalt(8, (err, salt) => {
+                    err && rej(err);
+                    bcrypt.hash(user.password, salt, (err, hash) => {
+                        err && rej(err);
+                        user.password = hash;
+                        res(next());
+                    });
+
+                });
+            });
+        });
 
         return this.mongoose.model(this.name, this.Schema);
     }
