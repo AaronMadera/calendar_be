@@ -14,8 +14,25 @@ class BaseRepository {
         return query.exec();
     }
 
+    async FindAll({ condition = {}, populate = null, sort = null, select = null, skip = null, limit = null }) {
+        if (condition.removed === undefined) condition.removed = false;
+        const query = this.model.find(condition);
+        if (populate) query.populate(populate);
+        if (sort) query.sort(sort);
+        if (select) query.select(select);
+
+        if (skip) query.skip(skip);
+        if (limit) query.limit(limit);
+
+        return query.exec();
+    }
+
     async Create(record) {
         return new this.model(record).save();
+    }
+
+    async DeleteFromDB(_id) {
+        return this.model.deleteOne({ _id })
     }
 
 }

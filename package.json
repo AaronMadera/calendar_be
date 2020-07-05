@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "debug": "nodemon --legacy-watch --inspect=0.0.0.0:56747 ./bin/www",
-    "seeder": "node ./app/helpers/seeder.js"
+    "seeder": "node ./app/helpers/seeder.js",
+    "test": "mocha --timeout 3000 --recursive"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -22,6 +23,9 @@
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.0.1",
     "nodemon": "^2.0.4"
   }
 }

@@ -5,12 +5,7 @@ global.config = require('../../config.json');
 DB.Initialize()
     .then(async () => {
         const model = global.db[ 'User' ];
-        const user = {
-            name: 'Admin',
-            email: 'super@user.com',
-            password: 'admin123',
-            isAdmin: true
-        };
+        const user = global.config.testing.adminCreds;
         const seederUser = await model.findOne({ email: user.email });
         if (!seederUser) {
             new model(user).save();
