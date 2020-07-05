@@ -27,6 +27,11 @@ class BaseRepository {
         return query.exec();
     }
 
+    async Count(condition = {}) {
+        if (condition.removed === undefined) condition.removed = false;
+        return this.model.countDocuments(condition).exec();
+    }
+
     async Create(record) {
         return new this.model(record).save();
     }

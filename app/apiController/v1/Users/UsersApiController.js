@@ -37,8 +37,11 @@ class UsersApiController {
     async ListUsers(req, res) {
         try {
             const { limit = 10, skip = 0 } = req.query;
-            const users = await this.userManager.ListUsers({ limit, skip, _id: req.user._id });
-            res.status(200).json({ error: false, data: { users }, msg: 'Users listed successfully' });
+            const [ users, total ] = await Promise.all([
+                this.userManager.ListUsers({ limit, skip, _id: req.user._id }),
+                this.userManager.CountUsers(req.user._id)
+            ]);
+            res.status(200).json({ error: false, data: { total, users }, msg: 'Users listed successfully' });
         } catch (e) {
             res.status(500).json({ error: true, data: {}, msg: 'Error while listing users' });
         }
