@@ -3,5 +3,13 @@
     "mongo": {
         "retries": 3,
         "url": "mongodb://mongodb:27017/coati_calendar"
+    },
+    "testing": {
+        "adminCreds": {
+            "name": "Admin",
+            "email": "super@user.com",
+            "password": "admin123",
+            "isAdmin": true
+        }
     }
 }
