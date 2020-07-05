@@ -41,6 +41,7 @@ describe('Users API', () => {
                 } catch (e) { done(e); }
             });
     });
+
     /* 
     *Test POST new User
     */
@@ -76,6 +77,29 @@ describe('Users API', () => {
                         resp.should.have.status(422);
                         resp.body.should.be.a('object');
                         resp.body.should.have.property('error', true);
+                        done();
+                    } catch (e) { done(e); }
+                });
+        });
+    });
+
+    /* 
+    *Test Get users list
+    */
+    describe('[GET] /api/v1/users/list', () => {
+        it('It should List max 2 users bc query.limit=2', done => {
+            chai.request(server)
+                .get('/api/v1/users/list?limit=2')
+                .set('authorization', tokenHeader)
+                .send(newUser)
+                .end((e, resp) => {
+                    if (e) done(e);
+                    try {
+                        resp.should.have.status(200);
+                        resp.body.should.be.a('object');
+                        resp.body.should.have.property('error', false);
+                        resp.body.should.have.property('data');
+                        resp.body.data.should.have.property('users');
                         done();
                     } catch (e) { done(e); }
                 });
