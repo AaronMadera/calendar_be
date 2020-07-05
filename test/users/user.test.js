@@ -6,7 +6,6 @@ chai.should();
 chai.use(chaiHttp);
 
 let UserRepository = require('../../app/repository/UserRepository');
-const { config } = require('bluebird');
 
 /* Aux vars */
 let userManager = null;

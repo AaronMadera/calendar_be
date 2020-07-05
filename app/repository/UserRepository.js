@@ -11,9 +11,13 @@ class UserRepository extends BaseRepository {
             condition: { removed: false, _id: { $ne: _id } },
             skip,
             limit,
-            select: '-password -createdAt'
+            select: '-password -createdAt -removed'
         };
         return this.FindAll(config);
+    }
+
+    async CountUsers(_id) {
+        return this.Count({ _id: { $ne: _id } })
     }
 }
 

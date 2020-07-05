@@ -11,6 +11,7 @@ class UsersApiController {
     Router(path) {
         this.app.post(`${path}/login`, Validators.UserLogin(), Validators.Validate, this.Login.bind(this));
         this.app.get(`${path}/list`, Session.IsAdmin, Validators.Pagination(), Validators.Validate, this.ListUsers.bind(this));
+        this.app.get(`${path}/:id`, Session.IsAdmin, Validators.ParamId(), Validators.Validate, this.GetUser.bind(this));
         this.app.post(`${path}/create`, Session.IsAdmin, Validators.UserCreation(), Validators.Validate, this.Create.bind(this));
         this.app.put(`${path}/update`, Session.IsAdmin, Validators.UserUpdating(), Validators.Validate, this.Update.bind(this));
         this.app.delete(`${path}/remove/:id`, Session.IsAdmin, Validators.ParamId(), Validators.Validate, this.Delete.bind(this));
@@ -37,10 +38,27 @@ class UsersApiController {
     async ListUsers(req, res) {
         try {
             const { limit = 10, skip = 0 } = req.query;
-            const users = await this.userManager.ListUsers({ limit, skip, _id: req.user._id });
-            res.status(200).json({ error: false, data: { users }, msg: 'Users listed successfully' });
+            const [ users, total ] = await Promise.all([
+                this.userManager.ListUsers({ limit, skip, _id: req.user._id }),
+                this.userManager.CountUsers(req.user._id)
+            ]);
+            res.status(200).json({ error: false, data: { total, users }, msg: 'Users listed successfully' });
         } catch (e) {
             res.status(500).json({ error: true, data: {}, msg: 'Error while listing users' });
+        }
+    }
+
+    async GetUser(req, res) {
+        try {
+            const config = {
+                condition: { _id: req.params.id, removed: false },
+                select: '-removed -createdAt -password'
+            };
+            const user = await this.userManager.Find(config);
+            if (!user) return res.status(404).json({ error: true, data: {}, msg: 'There is no User with such id' });
+            res.status(200).json({ error: false, data: { user }, msg: 'User listed successfully' });
+        } catch (e) {
+            res.status(500).json({ error: true, data: {}, msg: 'Error while listing user' });
         }
     }
 
