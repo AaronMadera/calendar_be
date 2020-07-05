@@ -31,8 +31,16 @@ class BaseRepository {
         return new this.model(record).save();
     }
 
+    async Update({ _id, record = {} }) {
+        return this.model.updateOne({ removed: false, _id }, { $set: record });
+    }
+
+    async Remove(_id) {
+        return this.model.updateOne({ _id }, { $set: { removed: true } });
+    }
+
     async DeleteFromDB(_id) {
-        return this.model.deleteOne({ _id })
+        return this.model.deleteOne({ _id });
     }
 
 }

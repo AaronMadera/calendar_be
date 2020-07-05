@@ -12,6 +12,7 @@ const { config } = require('bluebird');
 let userManager = null;
 let tokenHeader = null;
 let creationDate = null;
+let currentUserId = null;
 const newUser = {
     email: 'user@testing.com',
     password: 'testing',
@@ -52,14 +53,16 @@ describe('Users API', () => {
                 .post('/api/v1/users/create')
                 .set('authorization', tokenHeader)
                 .send(newUser)
-                .end((e, resp) => {
+                .end(async (e, resp) => {
                     if (e) done(e);
                     try {
-                        resp.should.have.status(203);
+                        resp.should.have.status(201);
                         resp.body.should.be.a('object');
                         resp.body.should.have.property('data');
                         resp.body.data.should.have.property('user');
                         resp.body.should.have.property('error', false);
+                        const currentUser = await userManager.Find({ condition: { createdAt: { $gte: creationDate } } });
+                        currentUserId = currentUser.id;
                         done();
                     } catch (e) { done(e); }
                 });
@@ -105,18 +108,98 @@ describe('Users API', () => {
                 });
         });
     });
+
+    /* 
+  *Test PUT User
+  */
+    describe('[PUT] /api/v1/users/update', () => {
+        it('It should PUT updated User', done => {
+            chai.request(server)
+                .put('/api/v1/users/update')
+                .set('authorization', tokenHeader)
+                .send({
+                    name: 'usert_test_updated',
+                    isAdmin: false,
+                    userId: currentUserId
+                })
+                .end((e, resp) => {
+                    if (e) done(e);
+                    try {
+                        resp.should.have.status(200);
+                        resp.body.should.be.a('object');
+                        resp.body.should.have.property('error', false);
+                        done();
+                    } catch (e) { done(e); }
+                });
+        });
+
+        it('It should NOT PUT updated User bc there\s no userId ', done => {
+            chai.request(server)
+                .put('/api/v1/users/update')
+                .set('authorization', tokenHeader)
+                .send({
+                    name: 'usert_test_updated',
+                    isAdmin: false,
+                })
+                .end((e, resp) => {
+                    if (e) done(e);
+                    try {
+                        resp.should.have.status(422);
+                        resp.body.should.be.a('object');
+                        resp.body.should.have.property('error', true);
+                        done();
+                    } catch (e) { done(e); }
+                });
+        });
+    });
+
+    /* 
+  *Test DELETE User
+  */
+    describe('[DELETE] /api/v1/users/remove', () => {
+        it('It should DELETE User', done => {
+            chai.request(server)
+                .delete(`/api/v1/users/remove/${currentUserId}`)
+                .set('authorization', tokenHeader)
+                .end((e, resp) => {
+                    if (e) done(e);
+                    try {
+                        resp.should.have.status(200);
+                        resp.body.should.be.a('object');
+                        resp.body.should.have.property('error', false);
+                        done();
+                    } catch (e) { done(e); }
+                });
+        });
+
+        it('It should NOT DELETE User bc id param isn\'t a mongoId ', done => {
+            chai.request(server)
+                .delete('/api/v1/users/remove/no-a-mongo-id')
+                .set('authorization', tokenHeader)
+                .end((e, resp) => {
+                    if (e) done(e);
+                    try {
+                        resp.should.have.status(422);
+                        resp.body.should.be.a('object');
+                        resp.body.should.have.property('error', true);
+                        done();
+                    } catch (e) { done(e); }
+                });
+        });
+    });
+
 });
 
 after(done => {
     /* DB created files in this test */
     const config = {
-        condition: { removed: false, createdAt: { $gte: creationDate } }
+        condition: { removed: true, createdAt: { $gte: creationDate } }
     };
     userManager.FindAll(config)
         .then(users => {
             users.should.be.a('array');
             users.should.have.length(1);
-            users[ 0 ].should.have.property('removed', false);
+            users[ 0 ].should.have.property('removed', true);
 
             userManager.DeleteFromDB(users[ 0 ]._id)
                 .then(done())
