@@ -5,7 +5,7 @@ const server = require('../../app');
 chai.should();
 chai.use(chaiHttp);
 
-let UserRepository = require('../../app/repository/UserRepository');
+const UserRepository = require('../../app/repository/UserRepository');
 
 /* Aux vars */
 let userManager = null;
@@ -93,7 +93,6 @@ describe('Users API', () => {
             chai.request(server)
                 .get('/api/v1/users/list?limit=2')
                 .set('authorization', tokenHeader)
-                .send(newUser)
                 .end((e, resp) => {
                     if (e) done(e);
                     try {
@@ -109,7 +108,7 @@ describe('Users API', () => {
     });
 
     /* 
-  *Test PUT User
+  *Test PUT User update
   */
     describe('[PUT] /api/v1/users/update', () => {
         it('It should PUT updated User', done => {
