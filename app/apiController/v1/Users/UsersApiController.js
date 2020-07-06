@@ -28,7 +28,7 @@ class UsersApiController {
             if (validation) {
                 const { email, name, _id, isAdmin } = user;
                 const { token, expires } = await TokenHelper.GenerateToken({ user: { email, name, _id, isAdmin } }, 1);
-                res.status(200).json({ error: false, data: { token, expires, user: { email, name } }, msg: 'Logged in successfully' });
+                res.status(200).json({ error: false, data: { token, expires, user: { email, name, _id, isAdmin } }, msg: 'Logged in successfully' });
             } else res.status(401).json({ error: true, msg: 'Wrong credentials, buddy!' })
         } catch (e) {
             res.status(500).json({ error: true, data: {}, msg: 'Error while trying to log in' });
