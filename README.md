@@ -38,12 +38,18 @@ backend for calendar project API
 *   press `ctrl` and `c` keys at the same time to exit docker process.
 
 ## Instructions
-*   build this docker image with (inside this main folder)
+*   Build this docker image with (inside this main folder)
     ```
     $ docker-compose build
     ```
 
-*   up this docker image with (inside this main folder)
+*   Please, run seeder to have at least 2 users to work with. These also are needed for testing purpose.
+    ```
+    $ npm run seeder
+    ```
+    this could be done inside docker if you want (read above how to attach shell)
+
+*   Up this docker image with (inside this main folder)
     ```
     $ docker-compose up
     ```
